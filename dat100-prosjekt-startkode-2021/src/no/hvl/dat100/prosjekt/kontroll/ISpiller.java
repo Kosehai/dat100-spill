@@ -90,6 +90,4 @@ public interface ISpiller {
 	 */
 	public Handling nesteHandling(Kort topp);
 
-	public void spillerVant();
-	public int getAntallVinn();
 }

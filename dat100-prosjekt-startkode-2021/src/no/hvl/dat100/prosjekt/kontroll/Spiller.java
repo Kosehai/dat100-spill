@@ -99,7 +99,4 @@ public abstract class Spiller implements ISpiller {
 		antallvinn++;
 	}
 
-	public int getAntallVinn(){
-		return antallvinn;
-	}
 }

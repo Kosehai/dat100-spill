@@ -1,9 +1,14 @@
 package no.hvl.dat100.prosjekt.kontroll;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import no.hvl.dat100.prosjekt.TODO;
 import no.hvl.dat100.prosjekt.kontroll.dommer.Regler;
 import no.hvl.dat100.prosjekt.kontroll.spill.Handling;
 import no.hvl.dat100.prosjekt.kontroll.spill.HandlingsType;
+import no.hvl.dat100.prosjekt.kontroll.spill.Kontroll;
 import no.hvl.dat100.prosjekt.kontroll.spill.Spillere;
 import no.hvl.dat100.prosjekt.modell.Kort;
 import no.hvl.dat100.prosjekt.modell.KortSamling;
@@ -26,6 +31,9 @@ public class SydSpiller extends Spiller {
 		super(spiller);
 	}
 
+	ArrayList<Kort> spilteKort = new ArrayList<>();
+	Kortfarge forbiFarge = null;
+
 	/**
 	 * Metode for å implementere strategi. Strategien er å spille det første
 	 * kortet som er lovlig (også en åtter selv om man har andre kort som også
@@ -38,67 +46,35 @@ public class SydSpiller extends Spiller {
 	 */
 	@Override
 	public Handling nesteHandling(Kort topp) {
-
+		if(!spilteKort.isEmpty() && spilteKort.get(spilteKort.size()-1) == topp){
+			forbiFarge = topp.getFarge();
+		} else {
+			forbiFarge = null;
+		}
+		spilteKort.add(topp);
 		Kort[] hand = getHand().getAllekort();
 		KortSamling lovlige = new KortSamling();
-		KortSamling attere = new KortSamling();
 		Kort spill = null;
-
-		int[] korttelling = new int[4];
 
 		for(Kort k : hand){
 			if(Regler.kanLeggeNed(k, topp)){
-				switch(k.getFarge()){
-					case Klover:
-						korttelling[0]++;
-						break;
-					case Spar:
-						korttelling[1]++;
-						break;
-					case Hjerter:
-						korttelling[2]++;
-						break;
-					case Ruter:
-						korttelling[3]++;
-						break;
-				}
-				if(Regler.atter(k)){
-					attere.leggTil(k);
-				} else {
-					lovlige.leggTil(k);
-				}
+				lovlige.leggTil(k);
 			}
 		}
 
-		int biggestIndex = 0;
-		for(int i=0;i<korttelling.length;i++){
-			if(korttelling[i] > korttelling[biggestIndex]){
-				biggestIndex = i;
-			}
+		Map<Kort, Integer> bestespill = new HashMap<>();
+		for(Kort k : lovlige.getAllekort()){
+			bestespill.put(k, rankKort(lovlige, k));
 		}
-		if(!lovlige.erTom()){
-			Kortfarge farge = Kortfarge.Klover;
-			switch(biggestIndex){
-				case 0:
-					farge = Kortfarge.Klover;
-					break;
-				case 1:
-					farge = Kortfarge.Spar;
-					break;
-				case 2:
-					farge = Kortfarge.Hjerter;
-					break;
-				case 3:
-					farge = Kortfarge.Ruter;
-					break;
-			}
-			for(Kort k : lovlige.getAllekort()){
-				if(k.getFarge() == farge) spill = k;
-			}
-		} else if(!attere.erTom()){
-			spill = attere.taSiste();
+
+		Map.Entry<Kort, Integer> bestekort = null;
+
+		for (Map.Entry<Kort, Integer> entry : bestespill.entrySet()) {
+			if(bestekort == null) bestekort = entry;
+			if(entry.getValue() > bestekort.getValue()) bestekort = entry;
 		}
-		
+
+		if(bestekort != null) spill = bestekort.getKey();
 
 		Handling handling = null;
 		if(spill != null){
@@ -109,5 +85,19 @@ public class SydSpiller extends Spiller {
 			handling = new Handling(HandlingsType.FORBI, null);
 		}
 		return handling;
+	}
+
+	public int rankKort(KortSamling hand, Kort kort){
+		int rank = 0;
+		for(Kort k : hand.getAllekort()){
+			if(kort.getFarge() == k.getFarge() && !Regler.atter(k) && !k.equals(kort)) rank += 5;
+		}
+		if(forbiFarge != null && forbiFarge == kort.getFarge()) rank += 10;
+		for(Kort k : spilteKort){
+			if(kort.getFarge() == k.getFarge()) rank += 1;
+			if(k.getVerdi() == kort.getVerdi()) rank += 1;
+		}
+		if(Regler.atter(kort)) rank = 1;
+		return rank;
 	}
 }

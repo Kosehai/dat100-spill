@@ -8,6 +8,7 @@ import no.hvl.dat100.prosjekt.kontroll.dommer.Dommer;
 import no.hvl.dat100.prosjekt.kontroll.dommer.Regler;
 import no.hvl.dat100.prosjekt.kontroll.dommer.Tur;
 import no.hvl.dat100.prosjekt.modell.Kort;
+import no.hvl.dat100.prosjekt.modell.KortSamling;
 
 public class Kontroll {
 
