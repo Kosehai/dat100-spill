@@ -1,11 +1,11 @@
 package no.hvl.dat100.prosjekt.kontroll;
 
 import java.util.ArrayList;
-
 import no.hvl.dat100.prosjekt.modell.KortSamling;
 import no.hvl.dat100.prosjekt.TODO;
 import no.hvl.dat100.prosjekt.kontroll.dommer.Regler;
 import no.hvl.dat100.prosjekt.kontroll.spill.Handling;
+import no.hvl.dat100.prosjekt.kontroll.spill.HandlingsType;
 import no.hvl.dat100.prosjekt.kontroll.spill.Spillere;
 import no.hvl.dat100.prosjekt.modell.Kort;
 import no.hvl.dat100.prosjekt.modell.KortUtils;
@@ -27,12 +27,9 @@ public class Spill {
 	public final static int ANTALL_KORT_START = Regler.ANTALL_KORT_START;
 	
 	public Spill() {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.constructor("Spill"));
-		// TODO - END
-		
+		bord = new Bord();
+		nord = new NordSpiller(Spillere.NORD);
+		syd = new SydSpiller(Spillere.SYD);
 	}
 	
 	/**
@@ -41,13 +38,7 @@ public class Spill {
 	 * @return referanse/peker bord objekt.
 	 */
 	public Bord getBord() {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
-		
+		return bord;
 	}
 	
 	/**
@@ -56,13 +47,7 @@ public class Spill {
 	 * @return referanse/peker til syd spiller.
 	 */
 	public ISpiller getSyd() {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
-		
+		return syd;
 	}
 
 	/**
@@ -71,12 +56,7 @@ public class Spill {
 	 * @return referanse/peker til nord.
 	 */
 	public ISpiller getNord() {
-		
-		// TODO - START
-
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		return nord;
 	}
 
 	/**
@@ -89,11 +69,8 @@ public class Spill {
 	 * av en klasse laget av gruppen (implementeres i oppgave 3).
 	 */
 	public void start() {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
+		delutKort();
+		bord.leggNedBunkeTil(bord.taOversteFraBunke());
 	}
 
 	/**
@@ -101,11 +78,13 @@ public class Spill {
 	 * 
 	 */
 	private void delutKort() {
-
-		// TODO - START
+		for(int i=1; i<= Regler.ANTALL_KORT_START;i++){
+			nord.leggTilKort(bord.getBunkeFra().taSiste());
+		}
 		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
+		for(int i=1; i<= Regler.ANTALL_KORT_START;i++){
+			syd.leggTilKort(bord.getBunkeFra().taSiste());
+		}
 	}
 
 	/**
@@ -119,12 +98,9 @@ public class Spill {
 	 * @return kortet som trekkes.
 	 */
 	public Kort trekkFraBunke(ISpiller spiller) {
-
-		// TODO - START
-			
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		Kort kort = bord.taOversteFraBunke();
+		spiller.trekker(kort);
+		return kort;
 	}
 
 	/**
@@ -136,13 +112,7 @@ public class Spill {
 	 * @return handlingen som skal utføres av kontroll delen.
 	 */
 	public Handling nesteHandling(ISpiller spiller) {
-		
-		// TODO - START
-		// Hint: se på hvilke metoder som er tilgjengelig på en spiller
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
-		
+		return spiller.nesteHandling(bord.seOversteBunkeTil());
 	}
 
 	/**
@@ -158,12 +128,10 @@ public class Spill {
 	 * @return true dersom spilleren har kortet, false ellers.
 	 */
 	public boolean leggnedKort(ISpiller spiller, Kort kort) {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		if(spiller.getHand().har(kort) == false) return false;
+		spiller.fjernKort(kort);
+		bord.getBunkeTil().leggTil(kort);
+		return true;
 	}
 
 	/**
@@ -174,12 +142,7 @@ public class Spill {
 	 *            spilleren som er i tur.
 	 */
 	public void forbiSpiller(ISpiller spiller) {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-	
-		// TODO - END
+		spiller.setAntallTrekk(0);
 	}
 
 	/**
@@ -194,17 +157,24 @@ public class Spill {
 	 * @return kort som trekkes, kort som spilles eller null ved forbi.
 	 */
 	public Kort utforHandling(ISpiller spiller, Handling handling) {
-
-		// TODO - START
 		Kort kort = null;
-
-		// Hint: del opp i de tre mulige handlinger og vurder 
-		// om noen andre private metoder i klassen kan brukes
-		// til å implementere denne metoden
-				
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		HandlingsType type = handling.getType();
+		switch(type){
+			case FORBI:
+				forbiSpiller(spiller);
+				return null;
+			case TREKK:
+				kort = trekkFraBunke(spiller);
+				break;
+			case LEGGNED:
+				kort = handling.getKort();
+				leggnedKort(spiller, kort);
+				break;
+			default:
+				return null;
+		}
+		
+		return kort;
 	}
 
 }
