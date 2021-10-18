@@ -51,7 +51,11 @@ public class SydSpiller extends Spiller {
 		} else {
 			forbiFarge = null;
 		}
+		if(spilteKort.size() > Regler.MAKS_KORT_FARGE*4){
+			spilteKort = new ArrayList<Kort>();
+		}
 		spilteKort.add(topp);
+		
 		Kort[] hand = getHand().getAllekort();
 		KortSamling lovlige = new KortSamling();
 		Kort spill = null;
