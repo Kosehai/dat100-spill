@@ -8,12 +8,12 @@ public abstract class Regler {
 	
 	// juster på disse for å spille med alle kort 
 	public static final int MAKS_KORT_FARGE = 13;
-	public final static int ANTALL_KORT_START = 3;
+	public final static int ANTALL_KORT_START = 5;
 
 	public static int nordvinn = 0;
 	public static int sydvinn = 0;
 	
-	private final static int MAKS_TREKK = 1;
+	private final static int MAKS_TREKK = 3;
 	
 	public static int maksTrekk() {
 		

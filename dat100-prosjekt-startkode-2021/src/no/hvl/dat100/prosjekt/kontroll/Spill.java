@@ -98,6 +98,7 @@ public class Spill {
 	 * @return kortet som trekkes.
 	 */
 	public Kort trekkFraBunke(ISpiller spiller) {
+		if(bord.antallBunkeFra() == 0) bord.snuTilBunken();
 		Kort kort = bord.taOversteFraBunke();
 		spiller.trekker(kort);
 		return kort;
