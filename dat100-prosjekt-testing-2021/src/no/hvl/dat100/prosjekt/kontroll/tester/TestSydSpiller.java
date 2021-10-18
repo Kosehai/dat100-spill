@@ -58,8 +58,8 @@ public class TestSydSpiller {
 		Kort kort3 = new Kort (Kortfarge.Spar,11);
 		
 		spiller.leggTilKort(kort1);
-		spiller.leggTilKort(kort3);
 		spiller.leggTilKort(kort2);
+		spiller.leggTilKort(kort3);
 		
 		Handling handling = spiller.nesteHandling(new Kort (Kortfarge.Spar,7));
 		

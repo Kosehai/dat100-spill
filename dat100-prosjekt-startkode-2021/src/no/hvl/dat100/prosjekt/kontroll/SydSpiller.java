@@ -46,7 +46,7 @@ public class SydSpiller extends Spiller {
 	 */
 	@Override
 	public Handling nesteHandling(Kort topp) {
-		if(!spilteKort.isEmpty() && spilteKort.get(spilteKort.size()-1) == topp){
+		if(!spilteKort.isEmpty() && spilteKort.get(spilteKort.size()-1).equals(topp)){
 			forbiFarge = topp.getFarge();
 		} else {
 			forbiFarge = null;
@@ -97,7 +97,7 @@ public class SydSpiller extends Spiller {
 			if(kort.getFarge() == k.getFarge()) rank += 1;
 			if(k.getVerdi() == kort.getVerdi()) rank += 1;
 		}
-		if(Regler.atter(kort)) rank = 1;
+		if(Regler.atter(kort)) rank = 0;
 		return rank;
 	}
 }
