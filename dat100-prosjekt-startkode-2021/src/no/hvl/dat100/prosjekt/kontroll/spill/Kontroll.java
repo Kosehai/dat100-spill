@@ -266,21 +266,20 @@ public class Kontroll {
 
 		Spillere vinner = Regler.vinner(spill.getNord(), spill.getSyd());
 
+		if(vinner == Spillere.NORD) Regler.nordvinn++;
+		if(vinner == Spillere.SYD) Regler.sydvinn++;
+
 		return (vinner != Spillere.INGEN);
 	}
 
 	public void spillAuto() {
-
 		while (!harVinner()) {
-
 			ISpiller spiller = turSpiller();
-
 			if (spiller != null) {
 				spillSpiller(spiller);
 			} else {
 				System.out.println("Feil i spillAuto - ingen spiller aktiv");
 			}
 		}
-
 	}
 }

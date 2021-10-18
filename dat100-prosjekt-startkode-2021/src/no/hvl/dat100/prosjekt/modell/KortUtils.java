@@ -32,14 +32,18 @@ public class KortUtils {
 	 * 			samling av kort som skal stokkes. 
 	 */
 	public static void stokk(KortSamling samling) {
-		Random rng = new Random();
 		Kort[] allekort = samling.getAllekort();
 		for(int i=0;i<allekort.length;i++){
+			Random rng = new Random();
 			int r = rng.nextInt(allekort.length);
 			//Swap
 			Kort kort = allekort[i];
 			allekort[i] = allekort[r];
 			allekort[r] = kort;
+		}
+		samling.fjernAlle();
+		for(Kort k : allekort){
+			samling.leggTil(k);
 		}
 	}
 	

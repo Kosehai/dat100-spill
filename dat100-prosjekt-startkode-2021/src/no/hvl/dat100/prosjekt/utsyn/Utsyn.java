@@ -14,9 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import no.hvl.dat100.prosjekt.kontroll.dommer.Regler;
 import no.hvl.dat100.prosjekt.kontroll.spill.Kontroll;
 import no.hvl.dat100.prosjekt.kontroll.spill.Spillere;
 import no.hvl.dat100.prosjekt.modell.Kort;
@@ -30,6 +32,8 @@ public class Utsyn extends JFrame {
 	private static String NUL_ANTALL_STR = "0";
 	private static String BORD_STR = "Bord";
 	private static String SYD_STR = "Syd";
+
+	private static String WIN_STR = "";
 
 	private static String START_ICON = "startknapp.png";
 	private static String SPILL_ICON = "autospill.png";
@@ -53,6 +57,9 @@ public class Utsyn extends JFrame {
 	private JButton bunkefra;
 	private JLabel bunkefraantal, bunketilantal;
 	private JLabel bunketil;
+	private JLabel winstr;
+
+	private JTextField nrunder;
 
 	private JButton startspill, tur, sydhand;
 	private JPanel syd;
@@ -76,6 +83,7 @@ public class Utsyn extends JFrame {
 
 		lyd = new Lyder();
 
+		setOppwin();
 		setoppNord();
 		settoppBord();
 		setoppSyd();
@@ -86,7 +94,7 @@ public class Utsyn extends JFrame {
 		startspill.addActionListener(new StartButtonListener(this));
 		sydhand.addActionListener(new SydButtonListener(this));
 		tur.addActionListener(new TurButtonListener(this));
-		autospill.addActionListener(new AutospillButtonListener(this));
+		autospill.addActionListener(new AutospillButtonListener(this, nrunder));
 
 		// start vinduet
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,6 +108,16 @@ public class Utsyn extends JFrame {
 
 	public Logger getLogger() {
 		return LOGGER;
+	}
+
+	private void setOppwin(){
+		JPanel win = new JPanel();
+		win.setBorder(new TitledBorder(new EtchedBorder(), "Wins"));
+		win.setSize(230,100);
+		winstr = new JLabel();
+		winstr.setText(WIN_STR);
+		win.add(winstr);
+		add(win, BorderLayout.EAST);
 	}
 
 	private void setoppSyd() {
@@ -139,6 +157,8 @@ public class Utsyn extends JFrame {
 		autospill = new JButton(autoikon);
 		autospill.setMargin(new Insets(0, 0, 0, 0));
 
+		nrunder = new JTextField("1", 5);
+
 		bord.add(startspill);
 		bord.add(tur);
 
@@ -149,6 +169,8 @@ public class Utsyn extends JFrame {
 		bord.add(bunketil);
 
 		bord.add(autospill);
+
+		bord.add(nrunder);
 
 		bord.setBackground(Color.WHITE);
 		add(bord, BorderLayout.CENTER);
@@ -297,6 +319,8 @@ public class Utsyn extends JFrame {
 
 		// oppdater kort for syd
 		visAlleKortSyd();
+
+		winstr.setText("Nord wins: " + Regler.nordvinn + " | Syd wins: " + Regler.sydvinn);
 
 		// sjekk om en spiller har vunnet
 		switch (kontroll.vinner()) {

@@ -22,7 +22,9 @@ public abstract class Spiller implements ISpiller {
 	private KortSamling hand; 
 	
 	// antall trekk spilleren har gjort fra fra-bunken
-	private int antalltrekk; 
+	private int antalltrekk;
+
+	public int antallvinn = 0;
 	
 	// hvem spilleren er (Nord,Syd,Ingen) - se oppramsklassen Spillere
 	private Spillere spiller;
@@ -91,5 +93,13 @@ public abstract class Spiller implements ISpiller {
 	public void trekker(Kort kort) {
 		hand.leggTil(kort);
 		antalltrekk++;
+	}
+
+	public void spillerVant(){
+		antallvinn++;
+	}
+
+	public int getAntallVinn(){
+		return antallvinn;
 	}
 }

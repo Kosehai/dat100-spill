@@ -7,7 +7,7 @@ import no.hvl.dat100.prosjekt.modell.*;
 public class KortIkoner {
 
 	public static int ANTALL_FARGE = 13;
-	static String IKON_MAPPE = "resources/";
+	static String IKON_MAPPE = "dat100-prosjekt-startkode-2021/resources/";
 
 	private static char KLOVER = 'c';
 	private static char SPAR = 's';
