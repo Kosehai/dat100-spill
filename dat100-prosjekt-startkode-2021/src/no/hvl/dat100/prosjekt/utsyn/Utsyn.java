@@ -57,7 +57,8 @@ public class Utsyn extends JFrame {
 	private JButton bunkefra;
 	private JLabel bunkefraantal, bunketilantal;
 	private JLabel bunketil;
-	private JLabel winstr;
+	private JLabel winstrn;
+	private JLabel winstrs;
 
 	private JTextField nrunder;
 
@@ -98,7 +99,7 @@ public class Utsyn extends JFrame {
 
 		// start vinduet
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 600);
+		setSize(850, 600);
 		//pack();
 		setVisible(true);
 
@@ -114,10 +115,11 @@ public class Utsyn extends JFrame {
 	private void setOppwin(){
 		JPanel win = new JPanel();
 		win.setBorder(new TitledBorder(new EtchedBorder(), "Wins"));
-		win.setSize(230,100);
-		winstr = new JLabel();
-		winstr.setText(WIN_STR);
-		win.add(winstr);
+		win.setSize(100,100);
+		winstrn = new JLabel();
+		winstrs = new JLabel();
+		win.add(winstrn);
+		win.add(winstrs);
 		add(win, BorderLayout.EAST);
 	}
 
@@ -321,7 +323,8 @@ public class Utsyn extends JFrame {
 		// oppdater kort for syd
 		visAlleKortSyd();
 
-		winstr.setText("Nord wins: " + Regler.nordvinn + " | Syd wins: " + Regler.sydvinn);
+		winstrn.setText("Nord wins: " + Regler.nordvinn);
+		winstrs.setText("Syd wins: " + Regler.sydvinn);
 
 		// sjekk om en spiller har vunnet
 		switch (kontroll.vinner()) {

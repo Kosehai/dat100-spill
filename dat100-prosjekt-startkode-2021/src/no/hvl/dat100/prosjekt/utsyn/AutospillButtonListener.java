@@ -25,13 +25,11 @@ public class AutospillButtonListener implements ActionListener {
 
 		Kontroll kontroll = utsyn.getKontroll();
 		int nrunder = Integer.parseInt(txt.getText());
-		for(int i=1;i<=nrunder;i++){
+		for(int i=1;i <= nrunder; i++){
 			kontroll.startSpill();
 			kontroll.spillAuto();
 		}
-		
 		utsyn.oppdater();
-		
 	}
 
 }

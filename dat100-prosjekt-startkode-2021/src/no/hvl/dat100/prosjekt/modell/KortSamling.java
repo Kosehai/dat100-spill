@@ -107,8 +107,7 @@ public class KortSamling {
 	 */
 	public Kort taSiste() {
 		if(erTom()) return null;
-		antall--;
-		Kort kort = samling[antall];
+		Kort kort = samling[--antall];
 		samling[antall] = null;
 		return kort;
 	}
@@ -139,6 +138,7 @@ public class KortSamling {
 	 */
 			 
 	public boolean fjern(Kort kort) {
+		if(erTom()) return false;
 		int rmindex = -1;
 		for(int i=0;i<antall;i++){
 			if(samling[i].equals(kort)){
@@ -146,6 +146,7 @@ public class KortSamling {
 			}
 		}
 		if(rmindex == -1) return false;
+		
 		Kort[] nysamling = new Kort[MAKS_KORT];
 		for(int i = 0, j = 0; i<samling.length; i++){
 			if(i != rmindex){

@@ -80,9 +80,6 @@ public class Spill {
 	private void delutKort() {
 		for(int i=1; i<= Regler.ANTALL_KORT_START;i++){
 			nord.leggTilKort(bord.getBunkeFra().taSiste());
-		}
-		
-		for(int i=1; i<= Regler.ANTALL_KORT_START;i++){
 			syd.leggTilKort(bord.getBunkeFra().taSiste());
 		}
 	}
